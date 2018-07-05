@@ -36,6 +36,7 @@
                     android:contentDescription="@string/movie_poster"
                     android:scaleType="centerCrop" />
 
+
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
