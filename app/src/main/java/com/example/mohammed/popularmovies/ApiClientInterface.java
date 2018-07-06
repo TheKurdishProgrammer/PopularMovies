@@ -4,16 +4,15 @@ import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+import static com.example.mohammed.popularmovies.MovieLinkConstants.apiKey;
+
 public interface ApiClientInterface {
 
-    String apiKey = "api_key=22c697a4410340a4449fd31b6b5d451b";
-    String mostPopular = "popularity.desc";
-    String topRated = "vote.average.desc";
 
+    @POST("popular?" + apiKey)
+    Call<MovieDBJsonResult> getPopularMovies(@Query("page") int page);
 
-    @POST("movie?" + apiKey)
-    Call<MovieDBJsonResult> getMovies(@Query("page") int page,
-                                      @Query("sort_by") String sortType
-    );
+    @POST("top_rated?" + apiKey)
+    Call<MovieDBJsonResult> getTopRatedMovies(@Query("page") int page);
 
 }

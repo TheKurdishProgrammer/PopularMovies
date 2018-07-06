@@ -21,13 +21,13 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
-public class MovieRecylerAdapter extends RecyclerView.Adapter<MovieRecylerAdapter.MovieViewHolder> {
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> {
 
 
     private List<Movie> movieList;
     private Context context;
 
-    public MovieRecylerAdapter(List<Movie> movieList, Context context) {
+    public MovieRecyclerAdapter(List<Movie> movieList, Context context) {
         this.movieList = movieList;
         this.context = context;
     }
@@ -49,7 +49,7 @@ public class MovieRecylerAdapter extends RecyclerView.Adapter<MovieRecylerAdapte
                         centerCrop().
                         error(R.drawable.warning);
 
-        Glide.with(context).load("http://image.tmdb.org/t/p/w185/" + posterUrl).
+        Glide.with(context).load(MovieLinkConstants.movieImgURL + posterUrl).
                 listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

@@ -31,8 +31,8 @@ public class DetailsActivity extends AppCompatActivity {
     private void setMovieData() {
         binding.movieDetails.averateRate.setText(getString(R.string.movie_rate, String.valueOf(movie.getVote_average())));
 
-        Glide.with(this).load("http://image.tmdb.org/t/p/w185/" + movie.getBackdrop_path())
-                .apply(new RequestOptions().centerCrop())
+        Glide.with(this).load(MovieLinkConstants.movieImgURL + movie.getBackdrop_path())
+                .apply(new RequestOptions().fitCenter())
                 .into(binding.movieDetails.backDrop);
 
         binding.movieDetails.overview.setText(movie.getOverview());
@@ -40,8 +40,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         binding.movieDetails.popilarity.setText(getString(R.string.movie_popularity, String.valueOf(movie.getPopularity())));
         binding.movieDetails.releaseDate.setText(getString(R.string.movie_release, movie.getRelease_date()));
-        Glide.with(this).load("http://image.tmdb.org/t/p/w185/" + movie.getPoster_path())
-                .apply(new RequestOptions().error(R.drawable.warning).centerCrop())
+        Glide.with(this).load(MovieLinkConstants.movieImgURL + movie.getPoster_path())
+                .apply(new RequestOptions().error(R.drawable.warning).fitCenter())
                 .into(binding.moviePoster);
     }
 
