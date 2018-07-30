@@ -1,4 +1,4 @@
-package com.example.mohammed.popularmovies;
+package com.example.mohammed.popularmovies.NetWorkUtils;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -9,6 +9,7 @@ public class MovieApiService {
 
 
     public static Retrofit getApiClient() {
+
         if (retrofit == null) {
             return retrofit = new Retrofit.Builder()
                     .baseUrl(MovieLinkConstants.baseMovieURL)
@@ -18,5 +19,7 @@ public class MovieApiService {
             return retrofit;
     }
 
-
+    public static void destroyApi() {
+        retrofit = null;
+    }
 }

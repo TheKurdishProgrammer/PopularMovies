@@ -109,6 +109,9 @@
     <string name="sort_movies_by">Sort Movies By</string>
     <string name="movie_back_drop_image">Movie Back Drop Image</string>
     <string name="movie_poster">Movie Poster</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="trailer_label">Trailer %1$d</string>
+    <string name="favourite_list_action_bar_title">Favourite List</string>
 
 
 </resources>

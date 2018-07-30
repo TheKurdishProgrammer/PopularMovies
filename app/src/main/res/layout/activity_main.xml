@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <ProgressBar
         android:id="@+id/content_progress"
@@ -26,6 +26,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_weight="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -51,8 +52,16 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/movie_list"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Hello World!" />
+
+        <ProgressBar
+            android:id="@+id/pagination_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+
     </LinearLayout>
 </FrameLayout>

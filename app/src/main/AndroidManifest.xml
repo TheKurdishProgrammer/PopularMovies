@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,14 +19,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailsActivity"
+            android:name=".activities.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mohammed.popularmovies.MainActivity" />
+
         </activity>
+        <activity
+            android:name=".activities.FavouriteActivity"
+            android:label="@string/favourite_list_action_bar_title" />
     </application>
 
 </manifest>

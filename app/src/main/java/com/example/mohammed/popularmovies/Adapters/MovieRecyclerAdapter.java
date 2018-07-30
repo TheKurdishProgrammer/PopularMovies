@@ -1,4 +1,4 @@
-package com.example.mohammed.popularmovies;
+package com.example.mohammed.popularmovies.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.example.mohammed.popularmovies.NetWorkUtils.MovieLinkConstants;
+import com.example.mohammed.popularmovies.R;
+import com.example.mohammed.popularmovies.activities.DetailsActivity;
+import com.example.mohammed.popularmovies.jsonModels.Movie;
 
 import java.util.List;
 
@@ -27,11 +31,21 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     private List<Movie> movieList;
     private Context context;
 
+
     public MovieRecyclerAdapter(List<Movie> movieList, Context context) {
         this.movieList = movieList;
         this.context = context;
+
     }
 
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList = movieList;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,7 +56,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
-        String posterUrl = movieList.get(position).getPoster_path();
+        String posterUrl = movieList.get(position).getPosterPath();
 
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.warning).
@@ -67,15 +81,13 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                     }
                 }).
                 apply(options).into(holder.poster);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("MOVIE", movieList.get(holder.getAdapterPosition()));
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("MOVIE", movieList.get(holder.getAdapterPosition()));
 
-                context.startActivity(intent);
-            }
+            context.startActivity(intent);
         });
+
 
     }
 
