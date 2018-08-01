@@ -2,7 +2,6 @@ package com.example.mohammed.popularmovies.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,11 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.mohammed.popularmovies.Adapters.MovieRecyclerAdapter;
-import com.example.mohammed.popularmovies.AppDatabase.AppDatabase;
 import com.example.mohammed.popularmovies.R;
 import com.example.mohammed.popularmovies.ViewModels.FavouriteMovieListViewModel;
 import com.example.mohammed.popularmovies.databinding.ActivityFavouriteBinding;
-import com.example.mohammed.popularmovies.jsonModels.Movie;
 
 import java.util.ArrayList;
 
@@ -67,17 +64,4 @@ public class FavouriteActivity extends AppCompatActivity {
     }
 
 
-    private class TestDelete extends AsyncTask<View, Void, Void> {
-
-
-        @Override
-        protected Void doInBackground(View... views) {
-            View view = views[0];
-            Movie movie = (Movie) view.getTag();
-
-            AppDatabase.getDefaultAppDatabaseInstance(FavouriteActivity.this).movieDao().delete(movie);
-
-            return null;
-        }
-    }
 }

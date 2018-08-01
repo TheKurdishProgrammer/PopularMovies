@@ -27,6 +27,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:contentDescription="No Favorite Movie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_no_favorite_movie_black_24dp" />
@@ -34,7 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="You Have No Favourite Movie"
+                android:text="@string/you_have_no_favourite_movie"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
                 android:textSize="20sp" />
@@ -42,7 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Start Adding Some Movie Here"
+                android:text="@string/start_adding_some_movie_here"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
                 android:textSize="12sp" />

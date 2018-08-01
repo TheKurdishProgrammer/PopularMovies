@@ -81,8 +81,7 @@ public class DetailsViewModel extends AndroidViewModel {
 
         @Override
         protected Movie doInBackground(Integer... integers) {
-            Movie movie = database.movieDao().findByFavId(integers[0]);
-            return movie;
+            return database.movieDao().findByFavId(integers[0]);
         }
 
 

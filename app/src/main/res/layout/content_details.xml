@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="16dp"
-                        android:text="Reviews"
+                        android:text="@string/reviews"
                         android:textColor="@android:color/background_dark"
                         android:textSize="20sp" />
 
@@ -134,7 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="16dp"
-                        android:text="Trailers"
+                        android:text="@string/trailers"
                         android:textColor="@android:color/background_dark"
                         android:textSize="20sp" />
 
