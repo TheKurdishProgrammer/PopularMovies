@@ -24,9 +24,6 @@
             android:theme="@style/NoActionBar">
 
         </activity>
-        <activity
-            android:name=".activities.FavouriteActivity"
-            android:label="@string/favourite_list_action_bar_title" />
     </application>
 
 </manifest>

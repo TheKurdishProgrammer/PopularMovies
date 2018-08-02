@@ -1,6 +1,7 @@
 package com.example.mohammed.popularmovies.activities;
 
-import android.content.Intent;
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +19,8 @@ import com.example.mohammed.popularmovies.Adapters.MovieRecyclerAdapter;
 import com.example.mohammed.popularmovies.NetWorkUtils.MovieApi;
 import com.example.mohammed.popularmovies.NetWorkUtils.MovieApiService;
 import com.example.mohammed.popularmovies.R;
+import com.example.mohammed.popularmovies.ViewModels.FavouriteMovieListViewModel;
+import com.example.mohammed.popularmovies.databinding.ActivityMainBinding;
 import com.example.mohammed.popularmovies.jsonModels.Movie;
 import com.example.mohammed.popularmovies.jsonModels.MovieRoot;
 
@@ -34,23 +36,38 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int TOP_RATE = 0;
     public static final int MOST_POPULAR = 1;
+    private static final String SCROLL = "SCROLL";
+    private static final String LIST = "LIST";
     public static int CURRENT_SORT_TYPE = 0;
     private MovieApi moviesAPI;
-    private RecyclerView movieRecycler;
     private int noOfPages = 1;
     private boolean isAllItemsLoaded;
     private boolean isPaginateLoading;
-    private ProgressBar paginateProgress;
     private Bundle savedInstanceState;
     private boolean dontComeThisTime;
+    private ActivityMainBinding binding;
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+
+            if (!recyclerView.canScrollVertically(1)) {
+                if (isAllItemsLoaded && !isPaginateLoading) {
+                    fetchMovies(CURRENT_SORT_TYPE);
+                    Log.e("OnBOTTOM", "RECYLER");
+                    binding.paginationProgress.setVisibility(View.VISIBLE);
+                }
+                isPaginateLoading = true;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
         setupRecycler();
-        viewBindings();
         setUpAdapter();
 
 
@@ -58,42 +75,21 @@ public class MainActivity extends AppCompatActivity {
 
         setListeners();
 
-//
-//        Paginate.with(movieRecycler, new MyPaginateLoadMor()).setLoadingTriggerThreshold(2)
-//                .addLoadingListItem(true)
-//                .build();
     }
 
-    private void viewBindings() {
-        paginateProgress = findViewById(R.id.pagination_progress);
-    }
 
     private void setUpAdapter() {
         MovieRecyclerAdapter adapter = new MovieRecyclerAdapter(new ArrayList<>(), this);
-        movieRecycler.setAdapter(adapter);
+        binding.movieList.addOnScrollListener(scrollListener);
+
+        binding.movieList.setAdapter(adapter);
 
     }
 
     private void setupRecycler() {
-        movieRecycler = findViewById(R.id.movie_list);
-        movieRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-        movieRecycler.setHasFixedSize(true);
-
-        movieRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    if (isAllItemsLoaded && !isPaginateLoading) {
-                        fetchMovies(CURRENT_SORT_TYPE);
-                        Log.e("OnBOTTOM", "RECYLER");
-                        paginateProgress.setVisibility(View.VISIBLE);
-                    }
-                    isPaginateLoading = true;
-                }
-            }
-        });
+        binding.movieList.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+        binding.movieList.setHasFixedSize(true);
+        binding.movieList.addOnScrollListener(scrollListener);
     }
 
     private void setListeners() {
@@ -102,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                binding.noFavoruiteMovie.setVisibility(View.GONE);
                 setUpAdapter();
                 noOfPages = 1;
                 fetchMovies(position);
@@ -141,20 +138,36 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.favourite:
-
-                startActivity(new Intent(this, FavouriteActivity.class));
+                FetchAndDisplayFavouriteMovies();
                 return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void FetchAndDisplayFavouriteMovies() {
+        FavouriteMovieListViewModel viewModel = ViewModelProviders.of(this).get(FavouriteMovieListViewModel.class);
+        binding.movieList.removeOnScrollListener(scrollListener);
+
+        viewModel.getItemAndPersonList().observe(this, movies -> {
+            if (movies != null) {
+                if (movies.size() == 0)
+                    binding.noFavoruiteMovie.setVisibility(View.VISIBLE);
+                else
+                    binding.noFavoruiteMovie.setVisibility(View.GONE);
+
+                ((MovieRecyclerAdapter) binding.movieList.getAdapter()).setMovieList(movies);
+            }
+        });
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("SCROLL", movieRecycler.getLayoutManager().onSaveInstanceState());
-        ArrayList<Movie> movies = (ArrayList<Movie>) ((MovieRecyclerAdapter) movieRecycler.getAdapter()).getMovieList();
-        outState.putParcelableArrayList("LIST", movies);
+        outState.putParcelable(SCROLL, binding.movieList.getLayoutManager().onSaveInstanceState());
+        ArrayList<Movie> movies = (ArrayList<Movie>) ((MovieRecyclerAdapter) binding.movieList.getAdapter()).getMovieList();
+        outState.putParcelableArrayList(LIST, movies);
     }
 
     private class MovieDBJsonResultCallback implements Callback<MovieRoot> {
@@ -168,17 +181,17 @@ public class MainActivity extends AppCompatActivity {
                     List<Movie> oldMovieList;
 
                     if (savedInstanceState != null && !dontComeThisTime) {
-                        oldMovieList = savedInstanceState.getParcelableArrayList("LIST");
+                        oldMovieList = savedInstanceState.getParcelableArrayList(LIST);
                         Log.e("OLDSIZE", String.valueOf(oldMovieList.size()));
-                        ((MovieRecyclerAdapter) movieRecycler.getAdapter()).setMovieList(oldMovieList);
-                        movieRecycler.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable("SCROLL"));
+                        ((MovieRecyclerAdapter) binding.movieList.getAdapter()).setMovieList(oldMovieList);
+                        binding.movieList.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(SCROLL));
                         dontComeThisTime = true;
                     } else {
 
-                        oldMovieList = ((MovieRecyclerAdapter) movieRecycler.getAdapter()).getMovieList();
+                        oldMovieList = ((MovieRecyclerAdapter) binding.movieList.getAdapter()).getMovieList();
                         oldMovieList.addAll(response.body().getResults());
 
-                        ((MovieRecyclerAdapter) movieRecycler.getAdapter()).setMovieList(oldMovieList);
+                        ((MovieRecyclerAdapter) binding.movieList.getAdapter()).setMovieList(oldMovieList);
                         noOfPages++;
 
                     }
@@ -186,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
                     isAllItemsLoaded = true;
                     isPaginateLoading = false;
-                    paginateProgress.setVisibility(View.GONE);
+                    binding.paginationProgress.setVisibility(View.GONE);
 
 
                 }

@@ -5,7 +5,7 @@ import com.example.mohammed.popularmovies.jsonModels.MovieRoot;
 import com.example.mohammed.popularmovies.jsonModels.ReviewRoot;
 import com.example.mohammed.popularmovies.jsonModels.TrailersRoot;
 
-public class NetWrokManager {
+public class NetworkManager {
 
 
     public static void getMovieReviews(int id, MovieApi api, NetrokResponselistener<ReviewRoot> listener) {

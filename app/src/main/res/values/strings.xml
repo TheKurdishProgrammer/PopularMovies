@@ -26,6 +26,7 @@
     <string name="favourite">Favourite</string>
     <string name="you_have_no_favourite_movie">You Have No Favourite Movie</string>
     <string name="start_adding_some_movie_here">Start Adding Some Movie Here</string>
+    <string name="no_favorite_movie">No Favorite Movie</string>
 
 
 </resources>

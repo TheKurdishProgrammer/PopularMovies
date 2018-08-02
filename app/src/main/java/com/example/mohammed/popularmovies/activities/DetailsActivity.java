@@ -16,7 +16,7 @@ import com.example.mohammed.popularmovies.Adapters.TrailerAdapter;
 import com.example.mohammed.popularmovies.NetWorkUtils.MovieApi;
 import com.example.mohammed.popularmovies.NetWorkUtils.MovieApiService;
 import com.example.mohammed.popularmovies.NetWorkUtils.MovieLinkConstants;
-import com.example.mohammed.popularmovies.NetWorkUtils.NetWrokManager;
+import com.example.mohammed.popularmovies.NetWorkUtils.NetworkManager;
 import com.example.mohammed.popularmovies.R;
 import com.example.mohammed.popularmovies.ViewModels.DetailsViewModel;
 import com.example.mohammed.popularmovies.databinding.ActivityDetailsBinding;
@@ -89,7 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void getMovieTrailers(int movie, MovieApi movieApi) {
 
-        NetWrokManager.getMovieTrailers(movie, movieApi, new NetrokResponselistener<TrailersRoot>() {
+        NetworkManager.getMovieTrailers(movie, movieApi, new NetrokResponselistener<TrailersRoot>() {
             @Override
             public void onResponseReceived(TrailersRoot trailersRoot) {
 
@@ -111,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void getMovieReviews(int movie, MovieApi movieApi) {
 
-        NetWrokManager.getMovieReviews(movie, movieApi, new NetrokResponselistener<ReviewRoot>() {
+        NetworkManager.getMovieReviews(movie, movieApi, new NetrokResponselistener<ReviewRoot>() {
             @Override
             public void onResponseReceived(ReviewRoot reviewRoot) {
 
