@@ -6,5 +6,4 @@ public interface MovieLinkConstants {
     String baseMovieURL = "http://api.themoviedb.org/3/movie/";
     String apiKey = "api_key=YOUR_API_KEY";
     String youtubeBaseURl = "https://www.youtube.com/watch?v=";
-
 }
